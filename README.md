@@ -105,7 +105,7 @@ Siga as instruções na tela para interagir com o aplicativo.
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE.md](LICENSE.md) para detalhes.
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ## 🤝 Contribuições
 
