@@ -3,11 +3,11 @@ package br.dev.projeto;
 import br.dev.projeto.dao.UserDAO;
 import br.dev.projeto.model.User;
 import br.dev.projeto.util.DatabaseConnection;
-
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     private static UserDAO userDAO;
     private static Scanner scanner;
 
@@ -162,7 +162,9 @@ public class Main {
 
         if (existingUser != null) {
             System.out.println("User to delete: " + existingUser);
-            System.out.print("Are you sure you want to delete this user? (y/n): ");
+            System.out.print(
+                "Are you sure you want to delete this user? (y/n): "
+            );
             String confirm = scanner.nextLine();
 
             if (confirm.equalsIgnoreCase("y")) {

@@ -1,14 +1,25 @@
 package br.dev.projeto.dao;
 
-
 import br.dev.projeto.model.User;
 import br.dev.projeto.util.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     private Connection connection;
 
     public UserDAO() {
@@ -19,7 +30,12 @@ public class UserDAO {
     public void create(User user) {
         String sql = "INSERT INTO users (name, email, age) VALUES (?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (
+            PreparedStatement stmt = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+            )
+        ) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
             stmt.setInt(3, user.getAge());
@@ -32,7 +48,9 @@ public class UserDAO {
                     user.setId(rs.getInt(1));
                 }
                 rs.close();
-                System.out.println("User created successfully! ID: " + user.getId());
+                System.out.println(
+                    "User created successfully! ID: " + user.getId()
+                );
             }
         } catch (SQLException e) {
             System.out.println("Error creating user: " + e.getMessage());
@@ -44,9 +62,10 @@ public class UserDAO {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
+        try (
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)
+        ) {
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -90,7 +109,8 @@ public class UserDAO {
 
     // UPDATE - Atualizar um usuário
     public void update(User user) {
-        String sql = "UPDATE users SET name = ?, email = ?, age = ? WHERE id = ?";
+        String sql =
+            "UPDATE users SET name = ?, email = ?, age = ? WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
@@ -101,7 +121,9 @@ public class UserDAO {
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows > 0) {
-                System.out.println("User updated successfully! ID: " + user.getId());
+                System.out.println(
+                    "User updated successfully! ID: " + user.getId()
+                );
             } else {
                 System.out.println("No user found with ID: " + user.getId());
             }
@@ -131,12 +153,13 @@ public class UserDAO {
 
     // CREATE TABLE - Criar a tabela de usuários se não existir
     public void createTableIfNotExists() {
-        String sql = "CREATE TABLE IF NOT EXISTS users (" +
-                "id SERIAL PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
-                "email VARCHAR(100) UNIQUE NOT NULL, " +
-                "age INTEGER" +
-                ")";
+        String sql =
+            "CREATE TABLE IF NOT EXISTS users (" +
+            "id SERIAL PRIMARY KEY, " +
+            "name VARCHAR(100) NOT NULL, " +
+            "email VARCHAR(100) UNIQUE NOT NULL, " +
+            "age INTEGER" +
+            ")";
 
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
